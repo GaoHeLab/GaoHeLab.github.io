@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>He Gao Lab · IGDB‑CAS</title>
+  <!-- Font Awesome for icons (optional but nice) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ----- global reset & base ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      background: #f8fafc;
+      color: #0b1a2f;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ----- top banner: logo + title (placeholder) ----- */
+    .banner {
+      background: #0b2a4a;        /* deep navy blue */
+      color: white;
+      padding: 1.2rem 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .banner .container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .logo-placeholder {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .logo-img {
+      width: 70px;
+      height: 70px;
+      background: #e5e9f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #0b2a4a;
+      text-align: center;
+      padding: 0.2rem;
+      flex-shrink: 0;
+      border: 2px solid white;
+      background: #f0f4ff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .institute-name {
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      border-left: 2px solid rgba(255,255,255,0.3);
+      padding-left: 1.2rem;
+    }
+
+    .institute-name span {
+      font-weight: 300;
+      opacity: 0.9;
+    }
+
+    /* ----- navigation tabs ----- */
+    .nav-tabs {
+      background: white;
+      border-bottom: 2px solid #e2e8f0;
+      padding: 0.6rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .nav-tabs .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 0.5rem;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 0.6rem 1.4rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #1e3a5f;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      background: #eef2f7;
+    }
+
+    .tab-btn.active {
+      background: #0b2a4a;
+      color: white;
+      box-shadow: 0 2px 6px rgba(11,42,74,0.25);
+    }
+
+    /* ----- main sections (tab content) ----- */
+    .tab-content {
+      display: none;
+      padding: 2.5rem 0 4rem 0;
+      animation: fade 0.25s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    /* ----- HERO / HOME (full‑width image) ----- */
+    .hero-image {
+      width: 100%;
+      height: 420px;
+      background: #cbd5e1;
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center 30%;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 300;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .hero-image span {
+      background: rgba(0,0,0,0.3);
+      padding: 0.6rem 2rem;
+      border-radius: 60px;
+      backdrop-filter: blur(2px);
+    }
+
+    /* ----- PI (课题组组长) ----- */
+    .pi-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      background: white;
+      padding: 2rem 2.5rem;
+      border-radius: 28px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    }
+
+    .pi-left {
+      flex: 1 1 260px;
+      max-width: 300px;
+      text-align: center;
+    }
+
+    .pi-photo {
+      width: 100%;
+      aspect-ratio: 1/1;
+      background: #d9e2ef;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1.2rem;
+      border: 4px solid white;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: #2c3e50;
+      background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .pi-name {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin: 0.5rem 0 0.2rem;
+    }
+
+    .pi-detail {
+      font-size: 1rem;
+      color: #1e3a5f;
+      margin: 0.2rem 0;
+    }
+
+    .pi-detail i {
+      width: 1.6rem;
+      color: #2c5282;
+    }
+
+    .pi-right {
+      flex: 2 1 400px;
+    }
+
+    .pi-right h3 {
+      font-size: 1.5rem;
+      border-bottom: 3px solid #0b2a4a;
+      padding-bottom: 0.3rem;
+      margin: 1.5rem 0 0.8rem 0;
+      display: inline-block;
+    }
+
+    .pi-right h3:first-of-type {
+      margin-top: 0;
+    }
+
+    .pi-right ul, .pi-right p {
+      margin-left: 0.2rem;
+      color: #1e293b;
+    }
+
+    .pi-right li {
+      list-style: none;
+      margin-bottom: 0.3rem;
+    }
+
+    .pi-right li::before {
+      content: "▹ ";
+      color: #0b2a4a;
+      font-weight: 500;
+    }
+
+    /* ----- members grid ----- */
+    .member-section {
+      margin-bottom: 2.8rem;
+    }
+
+    .member-section h2 {
+      font-size: 1.8rem;
+      border-left: 6px solid #0b2a4a;
+      padding-left: 1rem;
+      margin-bottom: 1.5rem;
+      color: #0b1a2f;
+    }
+
+    .member-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 2rem 1.5rem;
+    }
+
+    .member-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.2rem 0.8rem;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      transition: transform 0.1s ease;
+      border: 1px solid #f1f5f9;
+    }
+
+    .member-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    }
+
+    .member-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #d9e2ef;
+      margin: 0 auto 0.8rem auto;
+      background-size: cover;
+      background-position: center;
+      background-image: url('https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');
+    }
+
+    .member-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .member-email {
+      font-size: 0.85rem;
+      color: #2c5282;
+      word-break: break-all;
+    }
+
+    .member-topic {
+      font-size: 0.9rem;
+      color: #334155;
+      margin-top: 0.2rem;
+    }
+
+    /* ----- news & publications ----- */
+    .news-item {
+      background: white;
+      padding: 0.8rem 1.6rem;
+      border-radius: 60px;
+      margin-bottom: 0.6rem;
+      border-left: 4px solid #0b2a4a;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1rem;
+    }
+
+    .news-date {
+      font-weight: 600;
+      color: #0b2a4a;
+      min-width: 90px;
+    }
+
+    .pub-item {
+      background: white;
+      padding: 0.8rem 1.8rem;
+      border-radius: 16px;
+      margin-bottom: 0.6rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+      border-bottom: 1px solid #eef2f7;
+    }
+
+    .pub-title {
+      font-weight: 500;
+    }
+
+    .pub-journal {
+      color: #2c5282;
+      font-style: italic;
+    }
+
+    /* ----- responsive fine-tune ----- */
+    @media (max-width: 700px) {
+      .banner .container { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+      .institute-name { border-left: 0; padding-left: 0; }
+      .pi-wrapper { padding: 1.5rem; }
+      .pi-left { max-width: 100%; }
+      .hero-image { height: 220px; }
+      .member-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    }
+
+    /* footer */
+    .footer {
+      text-align: center;
+      padding: 2.5rem 0 1.5rem;
+      color: #64748b;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== BANNER (logo + institute) ===== -->
+<header class="banner">
+  <div class="container">
+    <div class="logo-placeholder">
+      <div class="logo-img">
+        <i class="fas fa-university" style="font-size: 2.2rem; opacity: 0.8;"></i>
+        <!-- you can replace the above with <img src="your-logo.png" alt="logo"> -->
+      </div>
+      <div class="institute-name">
+        <strong>Institute of Genetics and Developmental Biology</strong><br>
+        <span>Chinese Academy of Sciences · He Gao Lab</span>
+      </div>
+    </div>
+    <!-- you can add a small search or social icons here if needed -->
+  </div>
+</header>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="nav-tabs">
+  <div class="container">
+    <button class="tab-btn active" data-tab="home">Home</button>
+    <button class="tab-btn" data-tab="pi">Principal Investigator</button>
+    <button class="tab-btn" data-tab="members">Members</button>
+    <button class="tab-btn" data-tab="news">News & Events</button>
+    <button class="tab-btn" data-tab="publications">Publications</button>
+  </div>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="container">
+
+  <!-- HOME -->
+  <section id="home" class="tab-content active">
+    <div class="hero-image">
+      <span>He Gao Lab · IGDB‑CAS</span>
+    </div>
+    <p style="text-align: center; color: #475569; font-size: 1.2rem; margin-top: 0.5rem;">
+      Welcome to the He Gao Laboratory at the Institute of Genetics and Developmental Biology, CAS.
+    </p>
+    <!-- you can add a short welcome text or news snippet here -->
+  </section>
+
+  <!-- PI (课题组组长) -->
+  <section id="pi" class="tab-content">
+    <div class="pi-wrapper">
+      <div class="pi-left">
+        <div class="pi-photo">
+          <!-- PI photo placeholder (replace src) -->
+        </div>
+        <div class="pi-name">Prof. He Gao</div>
+        <div class="pi-detail"><i class="fas fa-envelope"></i> he.gao@igdb.ac.cn</div>
+        <div class="pi-detail"><i class="fas fa-user-tie"></i> Professor, Principal Investigator</div>
+        <div class="pi-detail"><i class="fas fa-phone-alt"></i> +86 (10) 6480 1234</div>
+        <div class="pi-detail"><i class="fas fa-map-pin"></i> Room 301, Genetics Building</div>
+      </div>
+      <div class="pi-right">
+        <h3>Research Interests</h3>
+        <ul>
+          <li>Developmental genetics and cell fate determination</li>
+          <li>Epigenetic regulation in stem cells and organogenesis</li>
+          <li>Single-cell multi-omics and computational biology</li>
+          <li>Genetic basis of human developmental disorders</li>
+        </ul>
+
+        <h3>Grants & Funding</h3>
+        <ul>
+          <li>National Key R&D Program of China (2024–2029)</li>
+          <li>NSFC Distinguished Young Scholar (2023–2028)</li>
+          <li>CAS Strategic Priority Research Program (2022–2027)</li>
+        </ul>
+
+        <h3>Selected Publications</h3>
+        <ul>
+          <li><strong>Gao H.</strong> et al. (2025) <em>Nature Genetics</em>, 57: 112-125.</li>
+          <li><strong>Gao H.</strong>, Zhang L. et al. (2024) <em>Cell Stem Cell</em>, 31: 405-420.</li>
+          <li><strong>Gao H.</strong> & Wang Y. (2023) <em>Genes & Development</em>, 37: 880-895.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBERS -->
+  <section id="members" class="tab-content">
+    <!-- Postdocs -->
+    <div class="member-section">
+      <h2>Postdoctoral Fellows</h2>
+      <div class="member-grid">
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Dr. Li Wei</div><div class="member-email">wei.li@igdb.ac.cn</div><div class="member-topic">Single-cell epigenomics</div></div>
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Dr. Chen Yang</div><div class="member-email">yang.chen@igdb.ac.cn</div><div class="member-topic">Stem cell biology</div></div>
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Dr. Zhao Min</div><div class="member-email">min.zhao@igdb.ac.cn</div><div class="member-topic">Developmental genetics</div></div>
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Dr. Wu Jing</div><div class="member-email">jing.wu@igdb.ac.cn</div><div class="member-topic">Bioinformatics</div></div>
+      </div>
+    </div>
+    <!-- PhD students -->
+    <div class="member-section">
+      <h2>PhD Students</h2>
+      <div class="member-grid">
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Wang Yu</div><div class="member-email">yu.wang@igdb.ac.cn</div><div class="member-topic">Epigenetic reprogramming</div></div>
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Zhang Lei</div><div class="member-email">lei.zhang@igdb.ac.cn</div><div class="member-topic">Organoid models</div></div>
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Liu Qiang</div><div class="member-email">qiang.liu@igdb.ac.cn</div><div class="member-topic">Computational genomics</div></div>
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1531123897727-8f129e1688ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Chen Xiao</div><div class="member-email">xiao.chen@igdb.ac.cn</div><div class="member-topic">Gene regulation</div></div>
+      </div>
+    </div>
+    <!-- Master students -->
+    <div class="member-section">
+      <h2>Master Students</h2>
+      <div class="member-grid">
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Sun Yi</div><div class="member-email">yi.sun@igdb.ac.cn</div><div class="member-topic">Developmental biology</div></div>
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Zhou Ting</div><div class="member-email">ting.zhou@igdb.ac.cn</div><div class="member-topic">Stem cell differentiation</div></div>
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Wu Fan</div><div class="member-email">fan.wu@igdb.ac.cn</div><div class="member-topic">Epigenetics</div></div>
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Zheng Hao</div><div class="member-email">hao.zheng@igdb.ac.cn</div><div class="member-topic">Bioinformatics</div></div>
+      </div>
+    </div>
+    <!-- Alumni -->
+    <div class="member-section">
+      <h2>Alumni</h2>
+      <div class="member-grid">
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Dr. Han Mei (2024)</div><div class="member-email">now at Harvard</div><div class="member-topic">Neural development</div></div>
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Dr. Xu Kai (2023)</div><div class="member-email">now at Stanford</div><div class="member-topic">Chromatin dynamics</div></div>
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Dr. Ren Peng (2022)</div><div class="member-email">now at Tsinghua</div><div class="member-topic">Single-cell sequencing</div></div>
+        <div class="member-card"><div class="member-photo" style="background-image: url('https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"></div><div class="member-name">Dr. Gao Fang (2021)</div><div class="member-email">now at MIT</div><div class="member-topic">Regenerative medicine</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWS -->
+  <section id="news" class="tab-content">
+    <div style="background: white; padding: 1.8rem 2rem; border-radius: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.02);">
+      <h2 style="border-left: 6px solid #0b2a4a; padding-left: 1rem; margin-bottom: 1.8rem;">News & Events</h2>
+      <div class="news-item"><span class="news-date">2026-08-15</span> Our lab will present 3 posters at the <strong>International Congress of Genetics</strong> in Melbourne.</div>
+      <div class="news-item"><span class="news-date">2026-07-30</span> New collaboration with <strong>EMBL</strong> on single-cell epigenomics launched.</div>
+      <div class="news-item"><span class="news-date">2026-07-12</span> Dr. Li Wei awarded <strong>CAS Young Scientist Fellowship</strong>.</div>
+      <div class="news-item"><span class="news-date">2026-06-28</span> Our review on "Epigenetic inheritance in development" accepted by <em>Nature Reviews Genetics</em>.</div>
+      <div class="news-item"><span class="news-date">2026-06-05</span> Lab retreat at <strong>Beijing Botanical Garden</strong> — great science and team building!</div>
+    </div>
+  </section>
+
+  <!-- PUBLICATIONS -->
+  <section id="publications" class="tab-content">
+    <div style="background: white; padding: 1.8rem 2rem; border-radius: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.02);">
+      <h2 style="border-left: 6px solid #0b2a4a; padding-left: 1rem; margin-bottom: 1.8rem;">Selected Publications</h2>
+      <div class="pub-item"><span class="pub-title">Single-cell chromatin landscape of human brain development</span> — <span class="pub-journal">Nature Genetics</span>, 2026 (in press)</div>
+      <div class="pub-item"><span class="pub-title">3D genome organization during early mouse embryogenesis</span> — <span class="pub-journal">Cell Stem Cell</span>, 2025, 32(4): 589-605</div>
+      <div class="pub-item"><span class="pub-title">A compendium of human developmental disorders caused by chromatin regulators</span> — <span class="pub-journal">Genes & Development</span>, 2024, 38(11-12): 492-511</div>
+      <div class="pub-item"><span class="pub-title">Dynamic DNA methylation landscapes in neural lineage specification</span> — <span class="pub-journal">Nature Communications</span>, 2023, 14: 7213</div>
+      <div class="pub-item"><span class="pub-title">CRISPR screening identifies new modulators of neuronal differentiation</span> — <span class="pub-journal">Cell Reports</span>, 2022, 40(9): 111285</div>
+      <div class="pub-item"><span class="pub-title">Multi-omics analysis of gastruloid development</span> — <span class="pub-journal">Developmental Cell</span>, 2021, 56(15): 2175-2191</div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p>© 2026 He Gao Lab · Institute of Genetics and Developmental Biology, CAS</p>
+    <p style="margin-top: 0.4rem; font-size: 0.8rem; opacity: 0.7;">Contact: he.gao@igdb.ac.cn | Last updated: August 2026</p>
+  </div>
+</footer>
+
+<!-- ===== TAB SWITCHING SCRIPT ===== -->
+<script>
+  (function() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = {
+      home: document.getElementById('home'),
+      pi: document.getElementById('pi'),
+      members: document.getElementById('members'),
+      news: document.getElementById('news'),
+      publications: document.getElementById('publications')
+    };
+
+    function activateTab(tabId) {
+      // hide all contents
+      Object.values(contents).forEach(el => el.classList.remove('active'));
+      // deactivate all buttons
+      tabs.forEach(btn => btn.classList.remove('active'));
+      // show selected
+      if (contents[tabId]) contents[tabId].classList.add('active');
+      // highlight button
+      tabs.forEach(btn => {
+        if (btn.dataset.tab === tabId) btn.classList.add('active');
+      });
+    }
+
+    tabs.forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const tabId = this.dataset.tab;
+        if (tabId) activateTab(tabId);
+      });
+    });
+
+    // default: home is already active, but ensure consistency
+    // if URL hash is present, use it
+    if (window.location.hash) {
+      const hash = window.location.hash.replace('#', '');
+      if (contents[hash]) activateTab(hash);
+    }
+  })();
+</script>
+
+<!-- 你可以把下面这行注释取消，然后替换图片链接 -->
+<!-- 所有图片占位均使用 Unsplash 示例图片，你可以直接替换 src 或 background-image 的 URL -->
+</body>
+</html>
